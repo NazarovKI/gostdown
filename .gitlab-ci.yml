@@ -1,0 +1,14 @@
+build_docx:
+  stage: build
+  only:
+    - master
+  script:
+    - call build-demo-report.bat
+    - call build-demo-espd.bat
+  artifacts:
+    paths:
+    - demo-report.docx
+    - demo-report.pdf
+    - demo-espd.docx
+    - demo-espd.pdf
+    expire_in: 1 week
