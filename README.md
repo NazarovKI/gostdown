@@ -10,6 +10,8 @@ PDF-файлы.
 средством совместной работы над большими документами, при этом соблюдая
 частые требования государственных заказчиков: формат docx и отечественные ГОСТы. 
 
+[Пример сгенерированного документа (PDF)](https://gitlab.iaaras.ru/iaaras/gostdown/-/jobs/artifacts/master/file/demo-report.pdf?job=build_docx).
+
 Использование Markdown и Bibtex открывает возможности к использованию
 целого ряда удобств *одновременно*:
 
@@ -92,6 +94,14 @@ PDF-файлы.
 - `demo-espd-raw.docx`, `demo-report-raw.docx` — результаты преобразования
    в docx без постобрабоки (используются для отладки ошибок)
 
+Результаты сборки (в терминологии GitLab — артефакты) доступны по ссылкам
+из раздела «[Pipelines](https://gitlab.iaaras.ru/iaaras/gostdown/pipelines)».
+Есть и более прямые ссылки:
+
+- [Перечень файлов наиболее свежей сборки](https://gitlab.iaaras.ru/iaaras/gostdown/-/jobs/artifacts/master/browse?job=build_docx).
+- [Отдельный файл из наиболее свежей сборки](https://gitlab.iaaras.ru/iaaras/gostdown/-/jobs/artifacts/master/file/demo-report.pdf?job=build_docx) (с предпросмотром).
+- [Отдельный файл из наиболее свежей сборки](https://gitlab.iaaras.ru/iaaras/gostdown/-/jobs/artifacts/master/raw/demo-report.pdf?job=build_docx) (прямое скачивание).
+
 
 # Инсталляция
 
@@ -161,7 +171,7 @@ Windows необходима лишь для автоматической вёр
     лишь один; второй можно удалить.
     
     Файл `.gitlab-ci.yml` можно удалить, если вам не требуется удалённый запуск
-    (см. следующий раздел).
+    (см. раздел «Удалённый запуск через GitLab CI»).
     
 4. Полученные `.docx` файлы не требуют, по замыслу, никакой дальнейшей ручной
    или автоматической обработки. Их можно отправлять заказчику; при желании
@@ -177,11 +187,15 @@ Windows необходима лишь для автоматической вёр
 ```
 pandoc original.docx -o original.md
 pandoc modified.docx -o modified.md
-diff original.md modified.md
+<программа для сравнения текстовых файлов> original.md modified.md
 ```
 
 Таким образом, изменения в `.docx` (по крайней мере, в текстовой части) не
 пройдут незамеченными.
+
+Программ для сравнения текстовых файлов доступно множество; можно отметить
+[Meld](http://meldmerge.org/) для Linux или [WinMerge](http://winmerge.org/) для
+Windows.
 
 ## Работа над более чем одним документом
 
