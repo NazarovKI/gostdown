@@ -3,8 +3,6 @@ param (
     [Parameter(Mandatory=$true)][string[]]$md,
     [string]$docx,
     [string]$pdf,
-    [string]$bib,
-    [string]$csl,
     [switch]$embedfonts,
     [switch]$counters
 )
@@ -33,16 +31,6 @@ else
   $docx = [System.IO.Path]::GetFullPath($docx)
 }
 
-if (-not [string]::IsNullOrEmpty($bib))
-{
-  $bib = [System.IO.Path]::GetFullPath($bib)
-}
-
-if (-not [string]::IsNullOrEmpty($csl))
-{
-  $csl = [System.IO.Path]::GetFullPath($csl)
-}
-
 if (-not [string]::IsNullOrEmpty($pdf))
 {
   $pdf = [System.IO.Path]::GetFullPath($pdf)
@@ -50,21 +38,8 @@ if (-not [string]::IsNullOrEmpty($pdf))
 
 $tempdocx = [System.IO.Path]::GetTempFilename() + ".docx"
 
-if ([string]::IsNullOrEmpty($csl) -and [string]::IsNullOrEmpty($bib))
-{
-  write-host "Executing Pandoc..."
-  &$exe $md -o $tempdocx  --filter pandoc-crossref  --filter pandoc-citeproc --reference-doc $template
-}
-elseif ((-not [string]::IsNullOrEmpty($csl)) -and (-not [string]::IsNullOrEmpty($bib)))
-{
-  write-host "Executing Pandoc..."
-  &$exe $md -o $tempdocx  --filter pandoc-crossref  --filter pandoc-citeproc --reference-doc $template --bibliography $bib --csl $csl
-}
-else
-{
-  Write-error "-bib and -csl must be both specified or not specified"
-  exit 112
-}
+write-host "Executing Pandoc..."
+&$exe $md -o $tempdocx --filter pandoc-crossref --filter pandoc-citeproc --reference-doc $template
 
 if ($LASTEXITCODE -ne 0)
 {
@@ -142,11 +117,11 @@ $format_single = "%1)","%2)","%3)","%4)"
 
 write-host "Handling list templates..."
 
-foreach ($templatett in $doc.ListTemplates)
+foreach ($tt in $doc.ListTemplates)
 {
-  for ($il = 1; $il -le $templatett.ListLevels.Count -and $il -le 4; $il++)
+  for ($il = 1; $il -le $tt.ListLevels.Count -and $il -le 4; $il++)
   {
-    $level = $templatett.ListLevels.Item($il)
+    $level = $tt.ListLevels.Item($il)
     $bullet = ($level.NumberStyle -eq [Microsoft.Office.Interop.Word.wdListNumberStyle]::wdListNumberStyleBullet)
     $arabic = ($level.NumberStyle -eq [Microsoft.Office.Interop.Word.wdListNumberStyle]::wdListNumberStyleArabic)
     $roman  = ($level.NumberStyle -eq [Microsoft.Office.Interop.Word.wdListNumberStyle]::wdListNumberStyleLowercaseRoman)
@@ -154,7 +129,7 @@ foreach ($templatett in $doc.ListTemplates)
     if ($bullet)
     {
       if ($level.NumberFormat -ne " ")
-	    {
+      {
         $level.NumberFormat = $bullets[$il - 1] + ""
       }
       $level.NumberPosition = $word.CentimetersToPoints($numberposition[$il - 1])

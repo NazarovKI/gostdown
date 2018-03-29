@@ -1,1 +1,1 @@
-pandoc.exe demo-report-beginning.md demo-main.md demo-report-end.md -o demo-report-raw.docx --filter pandoc-crossref  --filter pandoc-citeproc --reference-doc demo-template-report.docx --bibliography demo.bib --csl gost-r-7-0-5-2008-numeric-iaa.csl
+pandoc.exe demo-report-beginning.md demo-main.md demo-report-end.md -o demo-report-raw.docx --filter pandoc-crossref --filter pandoc-citeproc --reference-doc demo-template-report.docx

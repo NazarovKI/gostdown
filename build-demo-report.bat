@@ -1,1 +1,7 @@
-powershell.exe -command .\build.ps1 -md demo-report-beginning.md,demo-main.md,demo-report-end.md -template demo-template-report.docx -bib demo.bib -csl gost-r-7-0-5-2008-numeric-iaa.csl -docx demo-report.docx -pdf demo-report.pdf -embedfonts -counters
+powershell.exe -command .\build.ps1 ^
+-md demo-report-beginning.md,demo-main.md,demo-report-end.md ^
+-template demo-template-report.docx ^
+-docx demo-report.docx ^
+-pdf demo-report.pdf ^
+-embedfonts ^
+-counters

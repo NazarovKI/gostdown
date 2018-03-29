@@ -1,1 +1,6 @@
-powershell.exe -command .\build.ps1 -md demo-espd-beginning.md,demo-main.md,demo-espd-end.md -template demo-template-espd.docx -bib demo.bib -csl gost-r-7-0-5-2008-numeric-iaa.csl -docx demo-espd.docx -pdf demo-espd.pdf -embedfonts
+powershell.exe -command .\build.ps1 ^
+-md demo-espd-beginning.md,demo-main.md,demo-espd-end.md ^
+-template demo-template-espd.docx ^
+-docx demo-espd.docx ^
+-pdf demo-espd.pdf ^
+-embedfonts
