@@ -374,7 +374,11 @@ JPEG (и PNG) в таком случае растягиваются на всю 
 только одного размера из двух пропорции могут нарушаться. Так что для EMF рекомендуется
 задавать оба размера в Markdown.
 
-![Изображение в формате EMF размером 15 на 6 см.](oc-plot.emf){#fig:myfigure3 width=15cm height=6cm}
+<!-- type="image/emf" не оказывает влияния на docx, но необходимо для комфортной работы с
+файлом в VS Code + markdown-preview-enhanced. Текст, который вы сейчас читаете -- это комментарий,
+его не будет в документе. -->
+
+![Изображение в формате EMF размером 15 на 6 см.](oc-plot.emf){#fig:myfigure3 width=15cm height=6cm type="image/emf"}
 
 Обратите внимание: текст на графике набран тем же шрифтом, что и текст в документе.
 График был создан в Gnuplot как PDF-файл и впоследствии преобразован в EMF.
@@ -411,7 +415,7 @@ inkscape figure.pdf --export-emf=figure.emf --export-text-to-path
 не учитываются в счётчике изображений (`%NFIGURES%`), но тем не менее:
 
 :::{custom-style="Figure"}
-![](iaa-logo.emf){width=1.1in height=1in}
+![](iaa-logo.emf){width=1.1in height=1in type="image/emf"}
 :::
 
 (Как видите, векторные изображения тоже могут быть цветными.)
