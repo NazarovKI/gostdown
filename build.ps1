@@ -61,6 +61,12 @@ $selection = $word.Selection
 # (and polluting) the template
 write-host "Saving..."
 $doc.SaveAs([ref]$docx)
+if (-not $?)
+{
+  $doc.Close()
+  $word.Quit()
+  exit 112
+}
 
 write-host "Inserting main text..."
 if ($selection.Find.Execute("%MAINTEXT%^13", $True, $True, $False, $False, $False, $True, `
