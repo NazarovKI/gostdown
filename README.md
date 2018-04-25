@@ -112,8 +112,15 @@ PDF-файлы.
 2. [Pandoc](http://pandoc.org/) версии 2.1.1 или выше.
 [Дистрибутив Pandoc](https://github.com/jgm/pandoc/releases) включает также
 фильтр pandoc-citeproc, необходимый в нашем случае.
+**Внимание:** для работы скриптов требуется, чтобы директория,
+в которой находится исполняемый файл `pandoc.exe` (как правило,
+это директория `C:\Program Files (x86)\Pandoc`) была указана
+в переменной окружения `PATH`. 
 3. pandoc-crossref — ещё один необходимый фильтр. Дистрибутив можно
 скачать с [этой страницы](https://github.com/lierdakil/pandoc-crossref/releases).
+**Внимание:** исполняемый файл `pandoc-crossref.exe` требуется поместить
+в одну из директорий, указанных в `PATH`, например в вышеупомянутую
+`C:\Program Files (x86)\Pandoc`.
 4. Microsoft PowerShell. Входит в Windows начиная с 7-й версии.
 5. Шрифты компании «Паратайп»:
    [PT Serif, PT Sans и PT Mono](https://www.paratype.ru/public/).
