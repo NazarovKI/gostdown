@@ -1,5 +1,8 @@
 build_docx:
   stage: build
+  tags:
+    - word
+    - pandoc
   only:
     - master
   script:
