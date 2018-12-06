@@ -30,7 +30,9 @@
 <div id="refs" class="references" custom-style="ReferenceItem">
 </div>
 
-# [Приложение А]{custom-style="AppendixHeadingOne"} {#sec:app-a label="A"}
+# [ПРИЛОЖЕНИЕ\ А \
+**Заголовок приложения А**]{custom-style="AppendixHeadingOne"} {#sec:app-a label="A"}
+
 
 ## [Ненумерованный подзаголовок приложения А]{custom-style="UnnumberedHeadingTwo"} {.unnumbered}
 
@@ -49,4 +51,4 @@ $$ {#eq:myeqn-a}
 | Matera (Италия)    | 2003-2013         |  118             |
 | Apache Point (США) | 2006-2016         |  2648            |
 
-Table: Таблица в приложении, на которую есть ссылка выше. {#tbl:mytable-a}
+Table: Таблица в приложении, на которую есть ссылка выше {#tbl:mytable-a}
