@@ -18,16 +18,28 @@
     "et-al" ("и др.") упразднён в связи с невозможностью реализации этой вещи для русских и английских ссылок в одном списке.
     </summary>
     
-    <published>2018-03-01T00:00:00+03:00</published>
+    <published>2018-12-06T00:00:00+03:00</published>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <!-- Local terms -->
   <locale>
     <terms>
-    <!-- В русской литературе встречается как "номер", так и "выпуск", а иногда и то, и то. При этом в Zotero есть только одно поле issue. В ГОСТ-е рекомендуется использовать то обозначение (№ или вып.), которое используется в самом документе. Но это сделать нереально, поэтому везде (при любом языке) используем № -->
+    <!-- В русской литературе встречается как "номер", так и "выпуск", а иногда и то, и то.
+         В ГОСТ-е рекомендуется использовать то обозначение (№ или вып.), которое используется в самом документе.
+         В данный момент различить number и issue из Bibtex-файла невозможно.
+         Будем считать, что "номера" бывают при "томах", а "выпуски" -- там, где "томов" нет. -->
+    <!-- Смысл термов "number" и "issue" в данном файле противоположен русским переводам этих слов.
+         "number" используется для выпуска, "issue" -- для номера журнала. -->
+    <term name="number" form="short" text-case="sentence">Is.</term>
+    <term name="number-ru" form="short" text-case="sentence">Вып.</term>
     <term name="issue-ru" form="symbol">№</term>
     <term name="online-ru">электронный ресурс</term>
+    <term name="accessed-ru">дата обращения</term>
     <term name="volume-ru" form="short" text-case="sentence">Т.</term>
+    <term name="page" form="short">
+      <single>P.</single>
+      <multiple>P.</multiple>
+    </term>
     <term name="pages-ru" form="short" text-case="sentence" plural="never">С.</term>
     <term name="number-of-pages-ru" form="short">с.</term>
     <!-- Последующие термины не используются в библиографическом списке, но позволяют pandoc-citeproc-у различать ссылки с номерами страниц и главами -->
@@ -37,6 +49,11 @@
       <single>глава</single>
       <multiple>главы</multiple>
     </term>    
+    <term name="section-ru" form="short" text-case="sentence" plural="never">разд.</term>
+    <term name="section-ru">
+      <single>раздел</single>
+      <multiple>разделы</multiple>
+    </term>
     </terms>
   </locale>  
 
@@ -56,14 +73,14 @@
       <else>
         <names variable="editor translator" delimiter="; ">
           <label form="verb-short" suffix=" "/>
-          <name name-as-sort-order="all" sort-separator=" " initialize-with="." delimiter=", " delimiter-precedes-last="always"/>
+          <name name-as-sort-order="all" sort-separator=" " initialize-with=". " delimiter=", " delimiter-precedes-last="always"/>
         </names>
       </else>
     </choose>
   </macro>
   <macro name="author">
     <names variable="author">
-      <name name-as-sort-order="all" sort-separator=" " initialize-with="." delimiter=", " delimiter-precedes-last="always"/>
+      <name name-as-sort-order="all" sort-separator=" " initialize-with=". " delimiter=", " delimiter-precedes-last="always"/>
     </names>
   </macro>
   <macro name="title">
@@ -103,9 +120,8 @@
     <!-- document type and number (thesis, patent, report, thesis, manuscript,...) -->
     <choose>
       <if type="patent">
-        <text term="letter" form="short"/>
-        <!-- USA should be replaced by country variable when supported by CSL. However, it is not clear how it will be localized -->
-        <text variable="number" prefix=" " suffix=" USA"/>
+        <!-- Supporting only Russian patents -->
+        <text variable="number" prefix="пат. " />
       </if>
       <else>
         <!-- this is used for entries like 'Report', 'PhD thesis', 'submitted to ...' (for manuscripts) -->
@@ -142,7 +158,7 @@
   <macro name="locators">
     <!-- volume and issue -->
     <group delimiter=", ">
-      <group delimiter=" ">
+      <group delimiter=" ">
         <choose>
           <if variable="note">
             <text term="volume-ru" form="short" text-case="sentence"/>
@@ -154,23 +170,40 @@
           </else>
         </choose>
       </group>
-      <group delimiter=" ">
-        <choose>
-          <if variable="note">
-            <text term="issue-ru" form="symbol"/>
-          </if>
-          <else>
-            <text term="issue" form="symbol"/>
-          </else>
-        </choose>
-        <text variable="issue"/>
-      </group>
+      <choose>
+        <if variable="volume">
+          <group delimiter=" ">
+            <choose>
+              <if variable="note">
+                <text term="issue-ru" form="symbol"/>
+              </if>
+              <else>
+                <text term="issue" form="short" plural="false"/>
+              </else>
+            </choose>
+            <text variable="issue"/>
+          </group>
+        </if>
+        <else>
+          <group delimiter=" ">
+            <choose>
+              <if variable="note">
+                <text term="number-ru" form="short"/>
+              </if>
+              <else>
+                <text term="number" form="short"/>
+              </else>
+            </choose>
+            <text variable="issue"/>
+          </group>
+        </else>
+      </choose>
     </group>
   </macro>
   <macro name="page">
     <choose>
       <if variable="page">
-        <group delimiter=" ">
+        <group delimiter=" ">
           <choose>
             <if variable="note">
               <label variable="pages-ru" form="short" text-case="sentence" plural="never"/>
@@ -186,11 +219,11 @@
     </choose>
     <choose>
       <if variable="number-of-pages">
-        <group delimiter=" ">
+        <group delimiter=" ">
           <text variable="number-of-pages"/>
           <choose>
             <if variable="note">
-              <text term="number-of-pages-ru" form="short"/>
+              <text term="number-of-pages-ru" form="short" />
             </if>
             <else>
               <text term="page" form="short"/>
@@ -209,7 +242,14 @@
           <if variable="URL">
             <text variable="URL" prefix="URL: "/>
             <group prefix=" (" suffix=")" delimiter=": ">
-              <text term="accessed"/>
+              <choose>
+                <if variable="note">
+                  <text term="accessed-ru"/>
+                </if>
+                <else>
+                  <text term="accessed"/>
+                </else>
+              </choose>
               <!-- localized date is not used here, since we prefer the Russian date style for entries of all languages -->
               <date variable="accessed">
                 <date-part name="day" suffix="." form="numeric-leading-zeros"/>
@@ -227,10 +267,10 @@
     <sort>
       <key variable="citation-number"/>
     </sort>
-    <layout prefix="[" suffix="]" delimiter=",">
+    <layout prefix="[" suffix="]" delimiter=", ">
       <text variable="citation-number"/>
       <!-- Следующее должно неплохо работать для многих случаев, но точность отображения терминов (с., т., ч. и т.п.) определяется файлом русской локали, который не всегда совпадает с ГОСТ-ом -->
-      <group prefix=", " delimiter=" ">
+      <group prefix=", " delimiter=" ">
         <label variable="locator" form="short" plural="never"/>
         <text variable="locator"/>
       </group>
@@ -240,62 +280,67 @@
   <bibliography entry-spacing="0" second-field-align="flush">
     <layout suffix=".">
       <text variable="citation-number" suffix="."/>
-      <!-- Комментарии ниже даны в соответствии с терминами, определёнными в ГОСТе -->
       <choose> 
       <if type="article-journal chapter" match="any">
-        <group delimiter=" // ">
-          <group delimiter=". ">
-            <text macro="author"/>
-            <!-- Заголовок с указанием авторов -->
-            <text macro="title"/>
-            <!-- Заглавие -->
-            <text macro="type-number" prefix="xx:xx "/>
-          </group>
-          <group delimiter=". ">
-            <!-- Сведения, относящиеся к заглавию -->
-            <text macro="container"/>
-            <text macro="edition"/>
-            <!-- Издание -->
-            <!-- предполагается, что редакторы и переводчики относятся к конкретному изданию, поэтому указываются после номера издания -->
-            <text macro="editor-translator" prefix=" / "/>
-            <!-- Ответственность -->
-            <group delimiter=", ">
-              <!-- Выходные данные -->
-              <text macro="publisher"/>
-              <text macro="issued-year"/>
-            </group>
-            <!-- Сведения о местоположении составной части в документе или физические характеристики -->
-            <text macro="locators"/>
-            <text macro="page"/>
-            <text macro="access"/>
-          </group>
-        </group>
-      </if>
-      <else>
-        <group delimiter=" / ">
+        <group delimiter=" // " suffix = ". ">
           <group delimiter=". ">
             <group delimiter=": ">
               <group delimiter=". ">
-                <text macro="author"/>
+                <text macro="author" font-style="italic"/>
                 <text macro="title"/>
               </group>
               <text macro="type-number"/>
             </group>
           </group>
-          <group delimiter=". ">
-            <!-- Сведения, относящиеся к заглавию -->
+          <group delimiter=" / ">
             <text macro="container"/>
             <text macro="edition"/>
-            <!-- Издание -->
-            <!-- предполагается, что редакторы и переводчики относятся к конкретному изданию, поэтому указываются после номера издания -->
-            <text macro="editor-translator" prefix=" / "/>
-            <!-- Ответственность -->
+            <text macro="editor-translator"/>
+          </group>
+        </group>  
+        <group prefix=" " delimiter=". ">
+          <group delimiter=", ">
+            <text macro="publisher"/>
+            <text macro="issued-year"/>
+          </group>
+          <text macro="locators"/>
+          <text macro="page"/>
+          <text macro="access"/>
+        </group>
+      </if>
+      <else-if type="patent" match="any">
+        <group delimiter=" / ">
+          <group delimiter=": ">
+            <text macro="title"/>
+            <text macro="type-number"/>
+          </group>
+          <group delimiter="; ">
+            <text macro="author" font-style="italic"/>
+            <text macro="publisher"/>
+          </group>
+        </group>  
+      </else-if>
+      <else>
+        <group delimiter=". ">
+          <group delimiter=" / ">
+            <group delimiter=". ">
+              <group delimiter=": ">
+                <group delimiter=". ">
+                  <text macro="author" font-style="italic"/>
+                  <text macro="title"/>
+                </group>
+                <text macro="type-number"/>
+              </group>
+            </group>
+            <text macro="container"/>
+            <text macro="edition"/>
+            <text macro="editor-translator"/>
+          </group>  
+          <group prefix=" " delimiter=". ">
             <group delimiter=", ">
-              <!-- Выходные данные -->
               <text macro="publisher"/>
               <text macro="issued-year"/>
             </group>
-            <!-- Сведения о местоположении составной части в документе или физические характеристики -->
             <text macro="locators"/>
             <text macro="page"/>
             <text macro="access"/>
