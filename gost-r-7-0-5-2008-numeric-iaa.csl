@@ -298,7 +298,7 @@
             <text macro="editor-translator"/>
           </group>
         </group>  
-        <group prefix=" " delimiter=". ">
+        <group prefix="— " delimiter=". — ">
           <group delimiter=", ">
             <text macro="publisher"/>
             <text macro="issued-year"/>
@@ -336,7 +336,7 @@
             <text macro="edition"/>
             <text macro="editor-translator"/>
           </group>  
-          <group prefix=" " delimiter=". ">
+          <group prefix="— " delimiter=". — ">
             <group delimiter=", ">
               <text macro="publisher"/>
               <text macro="issued-year"/>
