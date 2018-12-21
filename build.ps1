@@ -418,6 +418,45 @@ foreach ($math in $doc.OMaths)
   $math.Range.Font.Size = 12.5
 }
 
+write-host "Handling INCLUDEs..."
+$selection.HomeKey([Microsoft.Office.Interop.Word.wdUnits]::wdStory) | out-null
+
+while ($selection.Find.Execute("%INCLUDE(*)%^13", $True, $True, $True, $False, $False, $True, `
+       [Microsoft.Office.Interop.Word.wdFindWrap]::wdFindContinue, $False, "", `
+       [Microsoft.Office.Interop.Word.wdReplace]::wdReplaceNone))
+{
+  if ($selection.Text -match '%INCLUDE\((.*)\)%')
+  {
+    $filename = $matches[1]
+    
+    $start = $Selection.Range.Start
+    $Selection.InsertFile([System.IO.Path]::GetFullPath($filename))
+    
+    if (!$?)
+    {
+      break
+    }
+      
+    $end = $Selection.Range.End
+
+    # Check if there is anything after the inserted documnt
+    $selection.WholeStory()
+    $totalend = $Selection.Range.End
+
+    # If there is nothing after the inserted documnt, remove the extra CR which
+    # mystically appears out of nowhere in that case
+    if ($end -ge ($totalend - 1))
+    {
+      $selection.Collapse([Microsoft.Office.Interop.Word.wdCollapseDirection]::wdCollapseEnd)  | out-null
+      $selection.MoveLeft([Microsoft.Office.Interop.Word.wdUnits]::wdCharacter, 1, `
+                          [Microsoft.Office.Interop.Word.wdMovementType]::wdExtend)  | out-null
+      $selection.Delete() | out-null
+    }
+  }
+}
+
+$selection.HomeKey([Microsoft.Office.Interop.Word.wdUnits]::wdStory) | out-null
+
 write-host "Inserting ToC..."
 if ($selection.Find.Execute("%TOC%^13", $True, $True, $False, $False, $False, $True, `
        [Microsoft.Office.Interop.Word.wdFindWrap]::wdFindContinue, $False, "",   `
