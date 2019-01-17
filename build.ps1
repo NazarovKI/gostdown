@@ -477,7 +477,7 @@ if ($selection.Find.Execute("%TOC%^13", $True, $True, $False, $False, $False, $T
 
 write-host "Inserting number of pages..."
 
-# Seemingly does not needed but who knows
+# Seemingly is not needed but who knows
 $doc.Repaginate()
 
 # Inserting "section pages" field gets the number of pages wrong, and no way has
