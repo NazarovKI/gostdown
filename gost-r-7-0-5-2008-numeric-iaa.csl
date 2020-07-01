@@ -40,7 +40,11 @@
       <single>P.</single>
       <multiple>P.</multiple>
     </term>
-    <term name="pages-ru" form="short" text-case="sentence" plural="never">С.</term>
+    <term name="pages-ru">
+       <single>страница</single>
+       <multiple>страницы</multiple>
+    </term>
+    <term name="pages-ru" form="short">С.</term>
     <term name="number-of-pages-ru" form="short">с.</term>
     <!-- Последующие термины не используются в библиографическом списке, но позволяют pandoc-citeproc-у различать ссылки с номерами страниц и главами -->
     <term name="chapter-ru" form="short" text-case="sentence" plural="never">гл.</term>
@@ -203,18 +207,20 @@
   <macro name="page">
     <choose>
       <if variable="page">
-        <group delimiter=" ">
           <choose>
             <if variable="note">
-              <label variable="pages-ru" form="short" text-case="sentence" plural="never"/>
-              <text variable="page"/>
+              <group delimiter=" ">
+                <text term="pages-ru" form="short"/>
+                <text variable="page"/>
+              </group>
             </if>
             <else>
-              <label variable="page" form="short" text-case="sentence" plural="never"/>
-              <text variable="page"/>
+              <group delimiter=" ">
+                <label variable="page" form="short" text-case="sentence" plural="never"/>
+                <text variable="page"/>
+              </group>
             </else>
           </choose>
-        </group>
       </if>
     </choose>
     <choose>
