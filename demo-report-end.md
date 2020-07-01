@@ -30,8 +30,7 @@
 <div id="refs" class="references" custom-style="ReferenceItem">
 </div>
 
-# [ПРИЛОЖЕНИЕ\ А \
-**Заголовок приложения А**]{custom-style="AppendixHeadingOne"} {#sec:app-a label="A"}
+# [ПРИЛОЖЕНИЕ\ А<br>**Заголовок приложения А**]{custom-style="AppendixHeadingOne"} {#sec:app-a label="A"}
 
 Это текст Приложения А. В приложениях тоже можно создавать подразделы,
 если очень хочется. Нумероваться, впрочем, подразделы не будут и ссылаться
